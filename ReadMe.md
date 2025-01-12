@@ -1,5 +1,34 @@
 Anonim Metin Paylaşım Platformu Projesi
 
+Kullanılan Teknolojiler:
+
+1. Backend:
+    - Asp.net
+    - Docker (Render için)
+
+2. Frontend:
+    - React
+
+3. Deployment:
+    - Render
+    - Vercel
+    
+Kodun Çalıştırılması İçin:
+
+1. clone https://github.com/dogukanunlu/anonymoustext/tree/main
+
+2. Backend için: 
+    - dotnet restore
+    - dotnet run
+
+3. Frontend için:
+    - npm install
+    - npm start
+
+Alternatif olarak frontendi görmek için https://anonymoustext-mauve.vercel.app/ sitesine gidilebilir ancak arkayüz hata verdiğinden işlevsel değil.
+
+
+
 Proje Özellikleri
 
 Bu proje, kullanıcıların anonim olarak metin paylaşabileceği bir platform sunmaktadır. Platformun temel özellikleri şunlardır:
@@ -77,6 +106,8 @@ Karşılaşılan Zorluklar
 frontend: https://anonymoustext-mauve.vercel.app/
 backend: https://anonymoustext.onrender.com/
 
-2. Infinite scroll
+2. Başta projeye önzyüzde blazor kullanarak başladım ancak lazy loading kısmı için işleri zorlaştırdığını farkedince React kullanmaya karar verdim.
+
+3. Infinite scroll
 
 Başta tüm datayı çekiyordum, sonradan lazy loadingi kullanmam gerektiğini keşfettim.
