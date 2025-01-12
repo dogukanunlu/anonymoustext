@@ -1,7 +1,6 @@
-using System.Diagnostics;
 using Backend.Models;
 using System.Text.Json;
-using System.IO;
+using Ganss.Xss;
 
 namespace Backend.Services
 {
@@ -14,26 +13,17 @@ namespace Backend.Services
 
         public TextService()
         {
-            // Load bad words at startup
             if (File.Exists(_badWordsFile))
-                _badWords.AddRange(File.ReadAllLines(_badWordsFile));
-            System.Diagnostics.Debug.WriteLine("Bad words loaded:");
-            
-            
-            
-            
+            {
+                _badWords.AddRange(File.ReadAllLines(_badWordsFile).Select(word => word.Trim())); // Trim bad words
+            }
 
-            // Monitor the bad words file for updates
             var watcher = new FileSystemWatcher(Path.GetDirectoryName(_badWordsFile)!, Path.GetFileName(_badWordsFile))
             {
                 NotifyFilter = NotifyFilters.LastWrite
             };
             watcher.Changed += (_, __) => LoadBadWords();
             watcher.EnableRaisingEvents = true;
-            foreach (var word in _badWords)
-            {
-                System.Diagnostics.Debug.WriteLine(word);
-            }
         }
 
         private void LoadBadWords()
@@ -41,13 +31,16 @@ namespace Backend.Services
             lock (_badWords)
             {
                 _badWords.Clear();
-                _badWords.AddRange(File.ReadAllLines(_badWordsFile));
-                foreach (var word in _badWords)
+                if (File.Exists(_badWordsFile))
                 {
-                    System.Diagnostics.Debug.WriteLine(word);
+                    _badWords.AddRange(File
+                        .ReadAllLines(_badWordsFile)
+                        .Select(word => word.Trim())
+                        .Where(word => !string.IsNullOrEmpty(word)));
                 }
             }
         }
+
 
         public bool ContainsBadWords(string content)
         {
@@ -59,6 +52,9 @@ namespace Backend.Services
 
         public void AddSubmission(Submission submission)
         {
+            var sanitizer = new HtmlSanitizer();
+            submission.Content = sanitizer.Sanitize(submission.Content);
+
             _fileMutex.WaitOne();
             try
             {
@@ -77,10 +73,13 @@ namespace Backend.Services
             try
             {
                 var lines = File.Exists(_submissionsFile) ? File.ReadAllLines(_submissionsFile) : Array.Empty<string>();
-                return lines
-                    .Skip(start)
-                    .Take(count)
-                    .Select(line => JsonSerializer.Deserialize<Submission>(line)!)
+
+                var reversedLines = lines.Reverse(); 
+
+                return reversedLines
+                    .Skip(start) 
+                    .Take(count) 
+                    .Select(line => JsonSerializer.Deserialize<Submission>(line)!) 
                     .ToList();
             }
             finally
