@@ -40,21 +40,11 @@ Kullanıcı tarafından gönderilen metinler temizlenir (sanitize edilir). Potan
 
 Backend tarafında HtmlSanitizer kütüphanesi kullanılarak zararlı içerik temizlenir.
 
-2. CORS (Cross-Origin Resource Sharing) Kontrolü
-
-API sadece belirli kaynaklardan gelen istekleri kabul edecek şekilde konfigüre edilmiştir. Bu sayede, yetkisiz alan adlarından yapılan talepler reddedilir.
-
-3. Girdi Doğrulama
+2. Girdi Doğrulama
 
 Gönderilen metinlerin uzunluğu ve formatı backend tarafında kontrol edilir. Bu sayede aşırı uzun, boş veya çok büyük boyutlu veriler reddedilir.
 
-4. Dosya Sistemi Güvenliği
-
-Gönderimlerin kaydedildiği ve kötü sözcüklerin bulunduğu dosya dizini uygulama başlatılırken otomatik olarak oluşturulur.
-
-Dosya yollarının güvenli bir şekilde kullanılması sağlanır (Path.Combine kullanılır).
-
-5. Kötü Sözcük Listesi
+3. Kötü Sözcük Listesi
 
 Kötü sözcükler, boş satırların ve gereksiz karakterlerin yok edilmesiyle optimize edilmiştir.
 
