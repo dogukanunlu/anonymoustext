@@ -3,14 +3,13 @@ import PostInput from "./components/PostInput";
 import PostList from "./components/PostList";
 
 const App = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "https://anonymoustext.onrender.com";
   const [posts, setPosts] = useState([]);
   const [start, setStart] = useState(0); 
   const [allLoaded, setAllLoaded] = useState(false); 
 
   const fetchPosts = async (reset = false) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/text/content?start=${reset ? 0 : start}&count=6`);
+      const response = await fetch(`http://localhost:5000/api/text/content?start=${reset ? 0 : start}&count=6`);
       if (response.ok) {
         const newPosts = await response.json();
         
