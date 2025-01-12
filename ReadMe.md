@@ -15,7 +15,7 @@ Kullanılan Teknolojiler:
     
 Kodun Çalıştırılması İçin:
 
-1. clone https://github.com/dogukanunlu/anonymoustext/tree/main
+1. clone https://github.com/dogukanunlu/anonymoustext
 
 2. Backend için: 
     - dotnet restore
